@@ -5,62 +5,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>College Chatbot</title>
   <style>
-    body { font-family: Arial; background: #f0f0f0; padding: 20px; }
-    #chatbox { width: 100%; max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
-    #messages { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
-    .user { text-align: right; color: blue; margin: 5px 0; }
-    .bot { text-align: left; color: green; margin: 5px 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .chat-container {
+      width: 400px;
+      max-height: 90vh;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      background: #2e86de;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .chat-box {
+      flex-grow: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background: #fdfdfd;
+    }
+
+    .user, .bot {
+      margin: 10px 0;
+      padding: 10px 15px;
+      border-radius: 20px;
+      max-width: 80%;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+
+    .user {
+      background: #d1e7ff;
+      align-self: flex-end;
+    }
+
+    .bot {
+      background: #eeeeee;
+      align-self: flex-start;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+
+    .chat-input input {
+      flex-grow: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 0;
+      outline: none;
+      font-size: 16px;
+    }
+
+    .chat-input button {
+      padding: 10px 20px;
+      background: #2e86de;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .chat-input button:hover {
+      background: #1c60a7;
+    }
   </style>
 </head>
 <body>
-
-  <div id="chatbox">
-    <h2>Ask Me Anything</h2>
-    <div id="messages"></div>
-    <input type="text" id="userInput" placeholder="Type your question..." style="width: 80%" />
-    <button onclick="getBotResponse()">Send</button>
+  <div class="chat-container">
+    <div class="chat-header">College Chatbot</div>
+    <div class="chat-box" id="messages"></div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Ask me anything..." />
+      <button onclick="getBotResponse()">Send</button>
+    </div>
   </div>
 
   <script>
-    const responses = {
-      "fee": "The BCA fee is ₹39,800 per semester.",
-      "admission": "Admission requires 10+2 with minimum 50%.",
-      "last date": "The last date to apply is July 30, 2025.",
-      "contact": "You can reach us at info@college.edu or call 01234-567890."
-    };
+    async function getBotResponse() {
+      const input = document.getElementById("userInput").value;
+      if (!input.trim()) return;
 
-    function getBotResponse() {
-      let input = document.getElementById("userInput").value.toLowerCase();
-      let reply = "Sorry, I didn’t understand that. Please ask about fees, admission, or contact.";
-
-      for (let keyword in responses) {
-        if (input.includes(keyword)) {
-          reply = responses[keyword];
-          break;
-        }
-      }
-
-      document.getElementById("messages").innerHTML += `<div class="user"><b>You:</b> ${input}</div>`;
-      document.getElementById("messages").innerHTML += `<div class="bot"><b>Bot:</b> ${reply}</div>`;
+      const messages = document.getElementById("messages");
+      messages.innerHTML += `<div class="user">${input}</div>`;
       document.getElementById("userInput").value = "";
+
+      const response = await fetch("https://college-chatbot-1-qsgu.onrender.com/get-response", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input }),
+      });
+
+      const data = await response.json();
+      messages.innerHTML += `<div class="bot">${data.reply}</div>`;
+      messages.scrollTop = messages.scrollHeight;
     }
   </script>
-
 </body>
 </html>
-<script>
-  async function getBotResponse() {
-    let input = document.getElementById("userInput").value;
-    document.getElementById("messages").innerHTML += `<div class="user"><b>You:</b> ${input}</div>`;
-    document.getElementById("userInput").value = "";
-
-    const response = await fetch('https://college-chatbot-1-qsgu.onrender.com/get-response', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: input })
-    });
-
-    const data = await response.json();
-    document.getElementById("messages").innerHTML += `<div class="bot"><b>Bot:</b> ${data.reply}</div>`;
-  }
-</script>
