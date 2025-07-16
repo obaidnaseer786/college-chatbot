@@ -54,7 +54,7 @@
     document.getElementById("messages").innerHTML += `<div class="user"><b>You:</b> ${input}</div>`;
     document.getElementById("userInput").value = "";
 
-    const response = await fetch("http://127.0.0.1:5000/get-response", {
+    const response = await fetch('https://college-chatbot-1-qsgu.onrender.com/get-response', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: input })
