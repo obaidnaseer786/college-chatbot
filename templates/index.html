@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>College Chatbot</title>
+  <style>
+    body { font-family: Arial; background: #f0f0f0; padding: 20px; }
+    #chatbox { width: 100%; max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+    #messages { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+    .user { text-align: right; color: blue; margin: 5px 0; }
+    .bot { text-align: left; color: green; margin: 5px 0; }
+  </style>
+</head>
+<body>
+
+  <div id="chatbox">
+    <h2>Ask Me Anything</h2>
+    <div id="messages"></div>
+    <input type="text" id="userInput" placeholder="Type your question..." style="width: 80%" />
+    <button onclick="getBotResponse()">Send</button>
+  </div>
+
+  <script>
+    const responses = {
+      "fee": "The BCA fee is ₹39,800 per semester.",
+      "admission": "Admission requires 10+2 with minimum 50%.",
+      "last date": "The last date to apply is July 30, 2025.",
+      "contact": "You can reach us at info@college.edu or call 01234-567890."
+    };
+
+    function getBotResponse() {
+      let input = document.getElementById("userInput").value.toLowerCase();
+      let reply = "Sorry, I didn’t understand that. Please ask about fees, admission, or contact.";
+
+      for (let keyword in responses) {
+        if (input.includes(keyword)) {
+          reply = responses[keyword];
+          break;
+        }
+      }
+
+      document.getElementById("messages").innerHTML += `<div class="user"><b>You:</b> ${input}</div>`;
+      document.getElementById("messages").innerHTML += `<div class="bot"><b>Bot:</b> ${reply}</div>`;
+      document.getElementById("userInput").value = "";
+    }
+  </script>
+
+</body>
+</html>
+<script>
+  async function getBotResponse() {
+    let input = document.getElementById("userInput").value;
+    document.getElementById("messages").innerHTML += `<div class="user"><b>You:</b> ${input}</div>`;
+    document.getElementById("userInput").value = "";
+
+    const response = await fetch("http://127.0.0.1:5000/get-response", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: input })
+    });
+
+    const data = await response.json();
+    document.getElementById("messages").innerHTML += `<div class="bot"><b>Bot:</b> ${data.reply}</div>`;
+  }
+</script>
