@@ -1,117 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style>body {
-  font-family: 'Roboto', sans-serif;
-  background: linear-gradient(120deg, #a1c4fd, #c2e9fb);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-}
-
-.chat-container {
-  width: 400px;
-  height: 600px;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.chat-header {
-  background: #2e86de;
-  color: white;
-  padding: 15px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.chat-box {
-  flex-grow: 1;
-  padding: 15px;
-  overflow-y: auto;
-  background: #fefefe;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.user-msg, .bot-msg {
-  max-width: 75%;
-  padding: 10px 15px;
-  border-radius: 18px;
-  font-size: 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.user-msg {
-  background: #dcf8c6;
-  align-self: flex-end;
-  border-bottom-right-radius: 0;
-}
-
-.bot-msg {
-  background: #f1f0f0;
-  align-self: flex-start;
-  border-bottom-left-radius: 0;
-}
-
-.bot-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-}
-
-#typing {
-  font-style: italic;
-  color: #888;
-  padding-left: 5px;
-}
-
-.chat-input {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid #ddd;
-  gap: 10px;
-}
-
-.chat-input input {
-  flex-grow: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  outline: none;
-  font-size: 14px;
-}
-
-.chat-input button {
-  padding: 10px 15px;
-  background: #2e86de;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.chat-input button:hover {
-  background: #1c60a7;
-}
-</style>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>College Chatbot</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f0f4f8;
+      background: linear-gradient(120deg, #a1c4fd, #c2e9fb);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -121,13 +17,13 @@
 
     .chat-container {
       width: 400px;
-      max-height: 90vh;
+      height: 600px;
       background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
     .chat-header {
@@ -135,6 +31,7 @@
       color: white;
       padding: 15px;
       text-align: center;
+      font-size: 18px;
       font-weight: bold;
     }
 
@@ -142,47 +39,55 @@
       flex-grow: 1;
       padding: 15px;
       overflow-y: auto;
-      background: #fdfdfd;
+      background: #fefefe;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .user, .bot {
-      margin: 10px 0;
+      max-width: 75%;
       padding: 10px 15px;
-      border-radius: 20px;
-      max-width: 80%;
+      border-radius: 18px;
+      font-size: 14px;
+      display: inline-block;
       line-height: 1.4;
-      word-wrap: break-word;
     }
 
     .user {
-      background: #d1e7ff;
+      background: #dcf8c6;
       align-self: flex-end;
+      border-bottom-right-radius: 0;
     }
 
     .bot {
-      background: #eeeeee;
+      background: #f1f0f0;
       align-self: flex-start;
+      border-bottom-left-radius: 0;
     }
 
     .chat-input {
       display: flex;
-      border-top: 1px solid #ccc;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+      gap: 10px;
     }
 
     .chat-input input {
       flex-grow: 1;
       padding: 10px;
-      border: none;
-      border-radius: 0;
+      border: 1px solid #ccc;
+      border-radius: 20px;
       outline: none;
-      font-size: 16px;
+      font-size: 14px;
     }
 
     .chat-input button {
-      padding: 10px 20px;
+      padding: 10px 15px;
       background: #2e86de;
-      border: none;
       color: white;
+      border: none;
+      border-radius: 20px;
       cursor: pointer;
       transition: background 0.3s ease;
     }
