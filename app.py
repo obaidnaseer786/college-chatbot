@@ -1,9 +1,13 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import os
+import spacy
 
 app = Flask(__name__)
 CORS(app)
+
+# Load spaCy model
+nlp = spacy.load("en_core_web_sm")
 
 @app.route("/")
 def home():
@@ -12,29 +16,28 @@ def home():
 @app.route("/get-response", methods=["POST"])
 def get_response():
     data = request.get_json()
-    user_input = data.get("message", "").lower()
+    user_input = data.get("message", "")
+    doc = nlp(user_input.lower())
 
-    # Keyword-based response logic
-    if "fee" in user_input:
+    # Rule-based NLP intent matching
+    if any(token.lemma_ in ["fee", "cost", "price"] for token in doc):
         reply = "The fee structure is ₹50,000 per semester."
-    elif "admission" in user_input:
+    elif any(token.lemma_ in ["admission", "enroll", "apply"] for token in doc):
         reply = "Admissions are open till August 31st. Apply online through the college portal."
-    elif "requirement" in user_input or "eligibility" in user_input:
+    elif any(token.lemma_ in ["requirement", "eligibility", "criteria"] for token in doc):
         reply = "Eligibility: Minimum 60% in 12th and a valid ID proof."
-    elif "duration" in user_input or "course length" in user_input:
-        reply = "The course duration is 3 years (6 semesters)."
-    elif "hostel" in user_input:
+    elif any(token.lemma_ in ["hostel", "room", "stay"] for token in doc):
         reply = "Yes, hostel facilities are available for both boys and girls."
-    elif "scholarship" in user_input:
+    elif any(token.lemma_ in ["scholarship", "fund", "discount"] for token in doc):
         reply = "Scholarships are available for meritorious and economically weaker students."
-    elif "contact" in user_input or "phone" in user_input:
+    elif any(token.lemma_ in ["contact", "call", "phone", "email"] for token in doc):
         reply = "You can contact the college at +91-9876543210 or email info@college.com"
-    elif "location" in user_input or "where" in user_input:
+    elif any(token.lemma_ in ["location", "address", "where"] for token in doc):
         reply = "The college is located in Karan Nagar, Srinagar, near SMHS Hospital."
-    elif "last date" in user_input or "deadline" in user_input:
+    elif any(token.lemma_ in ["deadline", "last", "date"] for token in doc):
         reply = "The last date to apply is August 31st, 2025."
     else:
-        reply = "I'm not sure about that. Please ask about fees, admission, hostel, or eligibility."
+        reply = "I'm not sure about that. Please ask about fees, admissions, or hostel."
 
     return jsonify({"reply": reply})
 
